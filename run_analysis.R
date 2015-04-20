@@ -31,18 +31,33 @@ train<-cbind(subjects_train,activity_train,data_train)
 #combine the datasets
 combined_data<-rbind(test,train)
 #add activity labels
-combined_data_wlabel <- merge(combined_data,activity_labels,by.x="activity", by.y="activity", all=FALSE)
+combined_data_wlabel <- merge(activity_labels,combined_data,by.x="activity", by.y="activity", all=FALSE)
 
-
-
-#2.	Extracts only the measurements on the mean and standard deviation for 
+#2.  Extracts only the measurements on the mean and standard deviation for 
 #each measurement. 
 #3.	Uses descriptive activity names to name the activities in the data set
 #4.	Appropriately labels the data set with descriptive variable names. 
+clist <- c("subject", "activity", "mean", "std")
+for (i in 1:length(clist)) {
+  assign(paste("a", i, sep = ""),grep(clist[i],names(combined_data_wlabel)))
+}
+nlist<-unique(sort(c(a1,a2,a3,a4)))
+step4<-subset(combined_data_wlabel,select=nlist)
+
 
 #5.	From the data set in step 4, creates a second, independent tidy data set 
 #with the average of each variable for each activity and each subject.
+library(reshape2)
+step5melt<-melt(step4,id=c("subjects","activity","activity_label"))
+library(plyr)
+step5mean<- dcast(step5melt, subjects + activity + activity_label ~ variable,mean)
+
 #Please upload the tidy data set created in step 5 of the instructions. 
 #Please upload your data set as a txt file created with write.table() 
 #using row.name=FALSE (do not cut and paste a dataset directly into the text box, 
 #as this may cause errors saving your submission).
+outfilename <-paste(getwd(),"/run_analysis_output.txt",sep="")
+write.table(step5mean,file=outfilename,row.names = FALSE)
+
+
+
