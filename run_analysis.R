@@ -1,5 +1,7 @@
-#use downloader package for zipfile
+#reference packages
 library(downloader)
+library(reshape2)
+library(plyr)
 
 #set file url and finalname with path
 fileUrl1 <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -37,19 +39,13 @@ combined_data_wlabel <- merge(activity_labels,combined_data,by.x="activity", by.
 #each measurement. 
 #3.	Uses descriptive activity names to name the activities in the data set
 #4.	Appropriately labels the data set with descriptive variable names. 
-clist <- c("subject", "activity", "mean", "std")
-for (i in 1:length(clist)) {
-  assign(paste("a", i, sep = ""),grep(clist[i],names(combined_data_wlabel)))
-}
-nlist<-unique(sort(c(a1,a2,a3,a4)))
+nlist<-grep("subject|activity|mean|std",names(combined_data_wlabel))
 step4<-subset(combined_data_wlabel,select=nlist)
 
 
 #5.	From the data set in step 4, creates a second, independent tidy data set 
 #with the average of each variable for each activity and each subject.
-library(reshape2)
 step5melt<-melt(step4,id=c("subjects","activity","activity_label"))
-library(plyr)
 step5mean<- dcast(step5melt, subjects + activity + activity_label ~ variable,mean)
 
 #Please upload the tidy data set created in step 5 of the instructions. 
@@ -58,6 +54,7 @@ step5mean<- dcast(step5melt, subjects + activity + activity_label ~ variable,mea
 #as this may cause errors saving your submission).
 outfilename <-paste(getwd(),"/run_analysis_output.txt",sep="")
 write.table(step5mean,file=outfilename,row.names = FALSE)
+
 
 
 
