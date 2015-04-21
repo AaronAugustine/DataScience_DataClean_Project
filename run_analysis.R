@@ -40,7 +40,7 @@ combined_data_wlabel <- merge(activity_labels,combined_data,by.x="activity", by.
 #3.	Uses descriptive activity names to name the activities in the data set
 #4.	Appropriately labels the data set with descriptive variable names. 
 nlist<-grep("subject|activity|mean|std",names(combined_data_wlabel))
-step4<-subset(combined_data_wlabel,select=nlist)
+step4<-combined_data_wlabel[,nlist]
 
 
 #5.	From the data set in step 4, creates a second, independent tidy data set 
