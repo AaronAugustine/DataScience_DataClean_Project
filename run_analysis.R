@@ -2,6 +2,7 @@
 library(downloader)
 library(reshape2)
 library(plyr)
+library(utils)
 
 
 #set file url and finalname with path
@@ -55,3 +56,8 @@ step5mean<- dcast(step5melt, subjects + activity + activity_label ~ variable,mea
 #Write out a tidy data set
 outfilename <-paste(getwd(),"/run_analysis_output.txt",sep="")
 write.table(step5mean,file=outfilename,row.names = FALSE)
+
+
+#write out variable names for code book
+varlist <-paste(getwd(),"/run_analysis_output_variable_list.txt",sep="")
+capture.output(str(step5mean), file = varlist, append = FALSE)
