@@ -60,4 +60,6 @@ write.table(step5mean,file=outfilename,row.names = FALSE)
 
 #write out variable names for code book
 varlist <-paste(getwd(),"/run_analysis_output_variable_list.txt",sep="")
-capture.output(str(step5mean), file = varlist, append = FALSE)
+Variables<-names(step5mean)
+Variables<-data.frame(Variables)
+capture.output(print(Variables), file = varlist, append = FALSE)
