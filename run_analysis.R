@@ -1,3 +1,4 @@
+#This code is for the data cleaning project
 #reference packages
 library(downloader)
 library(reshape2)
@@ -39,6 +40,7 @@ train<-cbind(subjects_train,activity_train,data_train)
 #combine the datasets using variable labels joining in activity labels
 combined_data<-rbind(test,train)
 #add activity labels
+#listed out by statements for completeness
 combined_data_wlabel <- merge(activity_labels,combined_data,by.x="activity", by.y="activity", all=FALSE)
 
 
